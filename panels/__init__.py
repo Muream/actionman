@@ -5,9 +5,9 @@ import logging
 logging.getLogger(__name__)
 
 
-class FaceRiggerPanel(bpy.types.Panel):
-    bl_category = "Face Rigger"
-    bl_label = "Face Rigger"
+class ActionManPanel(bpy.types.Panel):
+    bl_category = "Action Man"
+    bl_label = "Action Man"
     bl_idname = "FR_PT_panel"
     bl_space_type = "DOPESHEET_EDITOR"
     bl_region_type = "UI"

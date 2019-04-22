@@ -12,7 +12,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 bl_info = {
-    "name": "Face Rigger",
+    "name": "Action Man",
     "author": "Loïc Pinsard",
     "description": "",
     "blender": (2, 80, 0),
@@ -22,15 +22,15 @@ bl_info = {
 }
 
 import bpy
-from facerigger.operators.cleanaction import CleanAction
-from facerigger.operators.create_action_constraint import CreateConstraintFromAction
-from facerigger.panels import FaceRiggerPanel
+from actionman.operators.cleanaction import CleanAction
+from actionman.operators.create_action_constraint import CreateConstraintFromAction
+from actionman.panels import ActionManPanel
 
 
 CLASSES_TO_REGISTER = (
     CleanAction,
     CreateConstraintFromAction,
-    FaceRiggerPanel,
+    ActionManPanel,
 )
 
 
