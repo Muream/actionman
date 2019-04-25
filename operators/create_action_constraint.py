@@ -23,8 +23,20 @@ class CreateConstraintFromAction(bpy.types.Operator):
         """Execute the operator."""
         action = context.object.animation_data.action
 
-        for group in action.groups:
-            bone = bpy.data.objects["Armature"].pose.bones[group.name]
+        if action.name != action.name_backup:
+            # rename the constraints to the new action name
+            for obj in bpy.data.objects:
+                if obj.type == 'ARMATURE':
+                    for bone in obj.pose.bones:
+                        for constraint in bone.constraints:
+                            if constraint.type == 'ACTION':
+                                if constraint.name == action.name_backup:
+                                    constraint.name = action.name
+            action.name_backup = action.name
+
+        for group in action.groups:  # each group corresponds to a bone
+            obj = context.object
+            bone = obj.pose.bones[group.name]
 
             if action.name in [c.name for c in bone.constraints]:
                 logger.info(

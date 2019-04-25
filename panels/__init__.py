@@ -57,7 +57,7 @@ class ActionManPanel(bpy.types.Panel):
         row.separator()
 
         row = layout.row()
-        row.operator("action.create_constraint")
+        row.operator("action.create_constraint", text="Create/Update Constraints")
 
         row = layout.row()
         row.operator("action.delete_useles_constraints")

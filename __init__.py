@@ -39,6 +39,7 @@ CLASSES_TO_REGISTER = (
 def register():
     """Register the addon."""
     bpy.types.Action.face_action = bpy.props.BoolProperty(name="Face Action")
+    bpy.types.Action.name_backup = bpy.props.StringProperty(name="Name Backup")
     bpy.types.Action.target = bpy.props.StringProperty(name="Target")
     bpy.types.Action.subtarget = bpy.props.StringProperty(name="Sub Target")
     bpy.types.Action.transform_channel = bpy.props.EnumProperty(
