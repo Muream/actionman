@@ -65,9 +65,10 @@ def unregister():
     """Unregister the addon."""
     for cls in CLASSES_TO_REGISTER:
         bpy.utils.unregister_class(cls)
-    del bpy.types.Action.face_action
-    del bpy.types.Action.target
-    del bpy.types.Action.subtarget
-    del bpy.types.Action.transform_channel
-    del bpy.types.Action.activation_start
-    del bpy.types.Action.activation_end
+    # Don't delete all the properties since they could be needeed even if the addon isn't loaded
+    # del bpy.types.Action.face_action
+    # del bpy.types.Action.target
+    # del bpy.types.Action.subtarget
+    # del bpy.types.Action.transform_channel
+    # del bpy.types.Action.activation_start
+    # del bpy.types.Action.activation_end
