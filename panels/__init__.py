@@ -58,3 +58,6 @@ class ActionManPanel(bpy.types.Panel):
 
         row = layout.row()
         row.operator("action.create_constraint")
+
+        row = layout.row()
+        row.operator("action.delete_useles_constraints")
