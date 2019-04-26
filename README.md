@@ -12,4 +12,7 @@ This only works on armature objects, adapting the tool to work with other object
     - You forgot to click the `clean action` button before clicking the `create constraints` button.
 
 # Upcoming features
+- [ ] Extract bones world transformation in a new action.
+    This will be really usefull for making believable poses and then having multiple actions that when combined re-create that pose.
+    For example splitting a smile in two actions: one with the translate Z data and the other with the translate X.
 - [ ] Create mirror action
