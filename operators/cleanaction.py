@@ -10,14 +10,15 @@ def remove_flat_curves(action):
     logger.info("Removing flat curves of action {}.".format(action.name))
     for fcurve in action.fcurves:
         points = fcurve.keyframe_points
-        value = None
+        first_value = None
         is_flat_curve = True
         for point in points:
             coordinates = point.co
-            if value is None:
-                value = coordinates[1]
-            else:
-                if coordinates[1] != value:
+            value = round(coordinates[1], 5)
+            if first_value is None:  # storing the value of the first point.
+                first_value = value
+            else:  # comparing every point's value to the first value.
+                if value != first_value:
                     is_flat_curve = False
                     break
         if is_flat_curve:
@@ -36,9 +37,10 @@ def remove_empty_groups(action):
 
 class CleanAction(bpy.types.Operator):
     """Removes all the useless fcurves and groups of the active action."""
+
     bl_idname = "action.clean"
     bl_label = "Clean Action"
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"REGISTER", "UNDO"}
 
     @classmethod
     def poll(cls, context):
@@ -50,4 +52,4 @@ class CleanAction(bpy.types.Operator):
         action = context.object.animation_data.action
         remove_flat_curves(action)
         remove_empty_groups(action)
-        return {'FINISHED'}
+        return {"FINISHED"}
