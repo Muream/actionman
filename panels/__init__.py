@@ -15,7 +15,19 @@ class ActionManPanel(bpy.types.Panel):
     @classmethod
     def poll(cls, context):
         """Make sure there's an active action."""
-        return context.object.animation_data.action is not None
+        active_object = context.object
+        if not active_object:
+            return False
+
+        animation_data = active_object.animation_data
+        if not animation_data:
+            return False
+
+        action = animation_data.action
+        if not action:
+            return False
+
+        return True
 
     def draw(self, context):
         action = context.object.animation_data.action
@@ -40,7 +52,7 @@ class ActionManPanel(bpy.types.Panel):
         if target is not None:
             if type(target) == bpy.types.Armature:
                 row = layout.row()
-                row.prop_search(action, "subtarget", target, "bones", text='Bone')
+                row.prop_search(action, "subtarget", target, "bones", text="Bone")
 
         row = layout.row()
         row.prop(action, "transform_channel")
