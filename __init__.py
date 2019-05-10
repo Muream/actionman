@@ -22,24 +22,39 @@ bl_info = {
 }
 
 import bpy
-from actionman.operators.cleanaction import CleanAction
-from actionman.operators.create_action_constraint import CreateConstraintFromAction
-from actionman.operators.delete_useless_constraints import DeleteUselessConstraints
-from actionman.operators.delete_all_constraints import DeleteAllConstraints
-from actionman.panels import ActionManPanel
 
-
-CLASSES_TO_REGISTER = (
+from .operators import (
     CleanAction,
     CreateConstraintFromAction,
     DeleteUselessConstraints,
     DeleteAllConstraints,
-    ActionManPanel,
+    ActionMoveOperator,
+)
+from .panels import ActionManActionPanel, ActionManArmaturePanel
+from .properties import ActionManItemProperty
+
+
+CLASSES_TO_REGISTER = (
+    # operators
+    CleanAction,
+    CreateConstraintFromAction,
+    DeleteUselessConstraints,
+    DeleteAllConstraints,
+    ActionMoveOperator,
+    # panels
+    ActionManActionPanel,
+    ActionManArmaturePanel,
+    # properties
+    ActionManItemProperty,
 )
 
 
 def register():
     """Register the addon."""
+
+    for cls in CLASSES_TO_REGISTER:
+        bpy.utils.register_class(cls)
+
     bpy.types.Action.face_action = bpy.props.BoolProperty(name="Face Action")
     bpy.types.Action.name_backup = bpy.props.StringProperty(name="Name Backup")
     bpy.types.Action.target = bpy.props.StringProperty(name="Target")
@@ -60,18 +75,13 @@ def register():
     )
     bpy.types.Action.activation_start = bpy.props.FloatProperty("Activation Start")
     bpy.types.Action.activation_end = bpy.props.FloatProperty("Activation End")
-    for cls in CLASSES_TO_REGISTER:
-        bpy.utils.register_class(cls)
+    bpy.types.Armature.actionman_actions = bpy.props.CollectionProperty(
+        type=ActionManItemProperty
+    )
+    bpy.types.Armature.actionman_active_action_index = bpy.props.IntProperty()
 
 
 def unregister():
     """Unregister the addon."""
     for cls in CLASSES_TO_REGISTER:
         bpy.utils.unregister_class(cls)
-    # Don't delete all the properties since they could be needeed even if the addon isn't loaded
-    # del bpy.types.Action.face_action
-    # del bpy.types.Action.target
-    # del bpy.types.Action.subtarget
-    # del bpy.types.Action.transform_channel
-    # del bpy.types.Action.activation_start
-    # del bpy.types.Action.activation_end
