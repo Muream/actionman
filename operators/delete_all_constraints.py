@@ -5,11 +5,11 @@ import bpy
 logger = logging.getLogger(__name__)
 
 
-class DeleteUselessConstraints(bpy.types.Operator):
-    """Remove all the action constraints named like the active action that exist on an object that isn't influenced by the action."""
+class DeleteAllConstraints(bpy.types.Operator):
+    """Remove all the action constraints named like the active action."""
 
-    bl_idname = "action.delete_useless_constraints"
-    bl_label = "Delete Useless Constraints"
+    bl_idname = "action.delete_all_constraints"
+    bl_label = "Delete All Constraints"
     bl_options = {"REGISTER", "UNDO"}
 
     @classmethod
@@ -27,10 +27,7 @@ class DeleteUselessConstraints(bpy.types.Operator):
                 for bone in obj.pose.bones:
                     for constraint in bone.constraints:
                         if constraint.type == "ACTION":
-                            if (
-                                action.name == constraint.name
-                                and bone.name not in action.groups
-                            ):
+                            if action.name == constraint.name:
                                 logger.info(
                                     "Removing Constraint `{}` on bone `{}`".format(
                                         constraint.name, bone.name

@@ -24,14 +24,16 @@ bl_info = {
 import bpy
 from actionman.operators.cleanaction import CleanAction
 from actionman.operators.create_action_constraint import CreateConstraintFromAction
-from actionman.operators.delete_useless_constraints import DeleteUselessActionConstraints
+from actionman.operators.delete_useless_constraints import DeleteUselessConstraints
+from actionman.operators.delete_all_constraints import DeleteAllConstraints
 from actionman.panels import ActionManPanel
 
 
 CLASSES_TO_REGISTER = (
     CleanAction,
     CreateConstraintFromAction,
-    DeleteUselessActionConstraints,
+    DeleteUselessConstraints,
+    DeleteAllConstraints,
     ActionManPanel,
 )
 
