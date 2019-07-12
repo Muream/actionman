@@ -25,7 +25,7 @@ import bpy
 
 from .operators import (
     CleanAction,
-    CreateConstraintFromAction,
+    ApplyActionChanges,
     DeleteUselessConstraints,
     DeleteAllConstraints,
     ActionMoveOperator,
@@ -37,7 +37,7 @@ from .properties import ActionManItemProperty
 CLASSES_TO_REGISTER = (
     # operators
     CleanAction,
-    CreateConstraintFromAction,
+    ApplyActionChanges,
     DeleteUselessConstraints,
     DeleteAllConstraints,
     ActionMoveOperator,
@@ -49,13 +49,37 @@ CLASSES_TO_REGISTER = (
 )
 
 
+def update_face_action(self, context):
+    armature = context.active_object.data
+    value = self.face_action
+    if value:
+        existing_actions = [a.action for a in armature.actionman_actions]
+        if self in existing_actions:
+            return
+        prop = armature.actionman_actions.add()
+        prop.name = self.name
+        prop.action = self
+    else:
+        index = armature.actionman_actions.find(self.name)
+        if index > -1:
+            armature.actionman_actions.remove(index)
+
+def select_active_action(self, context):
+    armature = context.active_object
+    index = self.actionman_active_action_index
+    action = self.actionman_actions.values()[index].action
+    armature.animation_data.action = action
+
+
+
+
 def register():
     """Register the addon."""
 
     for cls in CLASSES_TO_REGISTER:
         bpy.utils.register_class(cls)
 
-    bpy.types.Action.face_action = bpy.props.BoolProperty(name="Face Action")
+    bpy.types.Action.face_action = bpy.props.BoolProperty(name="Face Action", update=update_face_action)
     bpy.types.Action.name_backup = bpy.props.StringProperty(name="Name Backup")
     bpy.types.Action.target = bpy.props.StringProperty(name="Target")
     bpy.types.Action.subtarget = bpy.props.StringProperty(name="Sub Target")
@@ -78,7 +102,7 @@ def register():
     bpy.types.Armature.actionman_actions = bpy.props.CollectionProperty(
         type=ActionManItemProperty
     )
-    bpy.types.Armature.actionman_active_action_index = bpy.props.IntProperty()
+    bpy.types.Armature.actionman_active_action_index = bpy.props.IntProperty(update=select_active_action)
 
 
 def unregister():

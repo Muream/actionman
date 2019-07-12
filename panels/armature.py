@@ -29,7 +29,9 @@ class ActionManArmaturePanel(bpy.types.Panel):
             armature,
             "actionman_active_action_index",
             rows=5,
+            type="DEFAULT",
         )
+
         col = row.column(align=True)
         operator = col.operator("actionman.action_move", icon="TRIA_UP", text="")
         operator.direction = "UP"

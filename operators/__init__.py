@@ -1,12 +1,12 @@
 from .clean_action import CleanAction
-from .create_action_constraint import CreateConstraintFromAction
+from .apply_action_changes import ApplyActionChanges
 from .delete_constraints import DeleteAllConstraints, DeleteUselessConstraints
 from .move_action import ActionMoveOperator
 
 
 __all__ = [
     "CleanAction",
-    "CreateConstraintFromAction",
+    "ApplyActionChanges",
     "DeleteAllConstraints",
     "DeleteUselessConstraints",
     "ActionMoveOperator",
