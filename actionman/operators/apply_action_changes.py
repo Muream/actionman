@@ -25,7 +25,7 @@ class ApplyActionChanges(bpy.types.Operator):
         """Execute the operator."""
         action = context.object.animation_data.action
 
-        if action.name != action.name_backup:
+        if action.name != action.actionman.name_backup:
             # rename the constraints to the new action name
             for obj in bpy.data.objects:
                 if obj.type == "ARMATURE":
@@ -38,7 +38,7 @@ class ApplyActionChanges(bpy.types.Operator):
                             if constraint.type == "ACTION":
                                 if constraint.name == action.actionman.name_backup:
                                     constraint.name = action.name
-            action.name_backup = action.name
+            action.actionman.name_backup = action.name
 
         for group in action.groups:  # each group corresponds to a bone
             obj = context.object
@@ -63,12 +63,12 @@ class ApplyActionChanges(bpy.types.Operator):
                 constraint.subtarget = action.actionman.subtarget
 
             constraint.transform_channel = action.actionman.transform_channel
-            constraint.target_space = action.target_space
+            constraint.target_space = action.actionman.target_space
 
             constraint.action = action
 
-            constraint.frame_start = action.actionman.frame_range[0]
-            constraint.frame_end = action.actionman.frame_range[1]
+            constraint.frame_start = action.frame_range[0]
+            constraint.frame_end = action.frame_range[1]
 
             constraint.min = action.actionman.activation_start
             constraint.max = action.actionman.activation_end
