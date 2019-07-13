@@ -38,7 +38,7 @@ def remove_empty_groups(action):
 class CleanAction(bpy.types.Operator):
     """Removes all the useless fcurves and groups of the active action."""
 
-    bl_idname = "action.clean"
+    bl_idname = "actionman.clean"
     bl_label = "Clean Action"
     bl_options = {"REGISTER", "UNDO"}
 

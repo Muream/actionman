@@ -18,8 +18,8 @@ class ApplyActionChanges(bpy.types.Operator):
     def poll(cls, context):
         action = context.object.animation_data.action
         action_exists = action is not None
-        is_face_action = action.face_action
-        return action_exists and is_face_action
+        is_managed = action.actionman.manage
+        return action_exists and is_managed
 
     def execute(self, context):
         """Execute the operator."""
@@ -36,7 +36,7 @@ class ApplyActionChanges(bpy.types.Operator):
                     for bone in obj.pose.bones:
                         for constraint in bone.constraints:
                             if constraint.type == "ACTION":
-                                if constraint.name == action.name_backup:
+                                if constraint.name == action.actionman.name_backup:
                                     constraint.name = action.name
             action.name_backup = action.name
 
@@ -57,22 +57,21 @@ class ApplyActionChanges(bpy.types.Operator):
                 constraint.name = action.name
                 constraint.show_expanded = False
 
-            target = bpy.data.objects[action.target]
+            target = bpy.data.objects[action.actionman.target]
             constraint.target = target
-            if action.subtarget:
-                constraint.subtarget = action.subtarget
+            if action.actionman.subtarget:
+                constraint.subtarget = action.actionman.subtarget
 
-            constraint.transform_channel = action.transform_channel
-            constraint.target_space = "LOCAL"
+            constraint.transform_channel = action.actionman.transform_channel
+            constraint.target_space = action.target_space
 
             constraint.action = action
 
-            constraint.frame_start = action.frame_range[0]
-            constraint.frame_end = action.frame_range[1]
+            constraint.frame_start = action.actionman.frame_range[0]
+            constraint.frame_end = action.actionman.frame_range[1]
 
-            constraint.min = action.activation_start
-            constraint.max = action.activation_end
-            constraint.target_space = action.target_space
+            constraint.min = action.actionman.activation_start
+            constraint.max = action.actionman.activation_end
 
         armature = bpy.context.object.data
         enforce_constraint_order(armature, action)

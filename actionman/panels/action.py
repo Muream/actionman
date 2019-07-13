@@ -35,38 +35,38 @@ class ActionManActionPanel(bpy.types.Panel):
         layout = self.layout
 
         row = layout.row()
-        row.prop(action, "face_action")
+        row.prop(action.actionman, "manage")
 
-        if not action.face_action:
+        if not action.actionman.manage:
             return
 
         row = layout.row()
-        row.operator("action.clean")
+        row.operator("actionman.clean")
 
         row = layout.row()
         row.separator()
 
         row = layout.row()
-        row.prop_search(action, "target", bpy.data, "objects")
-        target = bpy.data.armatures.get(action.target)
+        row.prop_search(action.actionman, "target", bpy.data, "objects")
+        target = bpy.data.armatures.get(action.actionman.target)
         if target is not None:
             if type(target) == bpy.types.Armature:
                 row = layout.row()
-                row.prop_search(action, "subtarget", target, "bones", text="Bone")
+                row.prop_search(action.actionman, "subtarget", target, "bones", text="Bone")
 
         row = layout.row()
-        row.prop(action, "transform_channel")
+        row.prop(action.actionman, "transform_channel")
 
         row = layout.row()
-        row.prop(action, "target_space")
+        row.prop(action.actionman, "target_space")
 
         row = layout.row()
         row.label(text="Activation Range:")
 
         split = layout.split()
         col = split.column(align=True)
-        col.prop(action, "activation_start", text="Start")
-        col.prop(action, "activation_end", text="End")
+        col.prop(action.actionman, "activation_start", text="Start")
+        col.prop(action.actionman, "activation_end", text="End")
 
         row = layout.row()
         row.separator()
@@ -77,5 +77,5 @@ class ActionManActionPanel(bpy.types.Panel):
         row = layout.row()
         row.label(text="Delete Constraints:")
         row = layout.row(align=True)
-        row.operator("action.delete_useless_constraints", text="Useless")
-        row.operator("action.delete_all_constraints", text="All")
+        row.operator("actionman.delete_useless_constraints", text="Useless")
+        row.operator("actionman.delete_all_constraints", text="All")

@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 class DeleteUselessConstraints(bpy.types.Operator):
     """Remove all the action constraints named like the active action that exist on an object that isn't influenced by the action."""
 
-    bl_idname = "action.delete_useless_constraints"
+    bl_idname = "actionman.delete_useless_constraints"
     bl_label = "Delete Useless Constraints"
     bl_options = {"REGISTER", "UNDO"}
 
@@ -16,8 +16,8 @@ class DeleteUselessConstraints(bpy.types.Operator):
     def poll(cls, context):
         action = context.object.animation_data.action
         action_exists = action is not None
-        is_face_action = action.face_action
-        return action_exists and is_face_action
+        is_managed = action.actionman.manage
+        return action_exists and is_managed
 
     def execute(self, context):
         """Execute the operator."""
@@ -44,7 +44,7 @@ class DeleteUselessConstraints(bpy.types.Operator):
 class DeleteAllConstraints(bpy.types.Operator):
     """Remove all the action constraints named like the active action."""
 
-    bl_idname = "action.delete_all_constraints"
+    bl_idname = "actionman.delete_all_constraints"
     bl_label = "Delete All Constraints"
     bl_options = {"REGISTER", "UNDO"}
 
@@ -52,7 +52,7 @@ class DeleteAllConstraints(bpy.types.Operator):
     def poll(cls, context):
         action = context.object.animation_data.action
         action_exists = action is not None
-        is_face_action = action.face_action
+        is_face_action = action.actionman.manage
         return action_exists and is_face_action
 
     def execute(self, context):
