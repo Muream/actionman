@@ -1,6 +1,8 @@
 import logging
 import bpy
 
+from ..utils import enforce_constraint_order
+
 
 logger = logging.getLogger(__name__)
 
@@ -69,5 +71,9 @@ class ApplyActionChanges(bpy.types.Operator):
 
             constraint.min = action.activation_start
             constraint.max = action.activation_end
+            constraint.show_expanded = False
+        
+        armature = bpy.context.object.data
+        enforce_constraint_order(armature, action)
 
         return {"FINISHED"}
