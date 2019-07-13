@@ -58,6 +58,9 @@ class ActionManActionPanel(bpy.types.Panel):
         row.prop(action, "transform_channel")
 
         row = layout.row()
+        row.prop(action, "target_space")
+
+        row = layout.row()
         row.label(text="Activation Range:")
 
         split = layout.split()

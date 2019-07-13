@@ -64,13 +64,12 @@ def update_face_action(self, context):
         if index > -1:
             armature.actionman_actions.remove(index)
 
+
 def select_active_action(self, context):
     armature = context.active_object
     index = self.actionman_active_action_index
     action = self.actionman_actions.values()[index].action
     armature.animation_data.action = action
-
-
 
 
 def register():
@@ -79,12 +78,14 @@ def register():
     for cls in CLASSES_TO_REGISTER:
         bpy.utils.register_class(cls)
 
-    bpy.types.Action.face_action = bpy.props.BoolProperty(name="Face Action", update=update_face_action)
+    bpy.types.Action.face_action = bpy.props.BoolProperty(
+        name="Face Action", update=update_face_action
+    )
     bpy.types.Action.name_backup = bpy.props.StringProperty(name="Name Backup")
     bpy.types.Action.target = bpy.props.StringProperty(name="Target")
     bpy.types.Action.subtarget = bpy.props.StringProperty(name="Sub Target")
     bpy.types.Action.transform_channel = bpy.props.EnumProperty(
-        name="Controller Transform Channel",
+        name="Transform Channel",
         items=[
             ("LOCATION_X", " X Location", " X Location", 1),
             ("LOCATION_Y", " Y Location", " Y Location", 2),
@@ -97,12 +98,24 @@ def register():
             ("SCALE_Z", "Z Scale", "Z Scale", 9),
         ],
     )
+    bpy.types.Action.target_space = bpy.props.EnumProperty(
+        name="Target Space",
+        items=[
+            ("WORLD", "World Space", "World Space", 1),
+            ("POSE", "Pose Space", "Pose Space", 2),
+            ("LOCAL_WITH_PARENT", "Local With Parent", "Local With Parent", 3),
+            ("LOCAL", "Local Space", "Local Space", 4),
+        ],
+        default='LOCAL'
+    )
     bpy.types.Action.activation_start = bpy.props.FloatProperty("Activation Start")
     bpy.types.Action.activation_end = bpy.props.FloatProperty("Activation End")
     bpy.types.Armature.actionman_actions = bpy.props.CollectionProperty(
         type=ActionManItemProperty
     )
-    bpy.types.Armature.actionman_active_action_index = bpy.props.IntProperty(update=select_active_action)
+    bpy.types.Armature.actionman_active_action_index = bpy.props.IntProperty(
+        update=select_active_action
+    )
 
 
 def unregister():

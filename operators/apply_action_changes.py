@@ -28,14 +28,14 @@ class ApplyActionChanges(bpy.types.Operator):
         if action.name != action.name_backup:
             # rename the constraints to the new action name
             for obj in bpy.data.objects:
-                if obj.type == 'ARMATURE':
+                if obj.type == "ARMATURE":
                     armature = obj.data
                     for prop in armature.actionman_actions:
                         if prop.action == action:
                             prop.name = action.name
                     for bone in obj.pose.bones:
                         for constraint in bone.constraints:
-                            if constraint.type == 'ACTION':
+                            if constraint.type == "ACTION":
                                 if constraint.name == action.name_backup:
                                     constraint.name = action.name
             action.name_backup = action.name
@@ -55,6 +55,7 @@ class ApplyActionChanges(bpy.types.Operator):
                 logger.info("Adding action constraint on {}".format(bone))
                 constraint = bone.constraints.new("ACTION")
                 constraint.name = action.name
+                constraint.show_expanded = False
 
             target = bpy.data.objects[action.target]
             constraint.target = target
@@ -71,8 +72,8 @@ class ApplyActionChanges(bpy.types.Operator):
 
             constraint.min = action.activation_start
             constraint.max = action.activation_end
-            constraint.show_expanded = False
-        
+            constraint.target_space = action.target_space
+
         armature = bpy.context.object.data
         enforce_constraint_order(armature, action)
 
