@@ -48,6 +48,7 @@ class ActionMoveOperator(bpy.types.Operator):
         self.armature.actionman_actions.move(self.index, new_index)
         self.armature.actionman_active_action_index = new_index
         self.index = new_index
+        self.action.actionman.index = new_index
 
         enforce_constraint_order(self.armature, self.action)
         enforce_constraint_order(self.armature, other_action)

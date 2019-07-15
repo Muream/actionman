@@ -51,3 +51,4 @@ class ActionManProperties(bpy.types.PropertyGroup):
 
     activation_start: bpy.props.FloatProperty("Activation Start")
     activation_end: bpy.props.FloatProperty("Activation End")
+    index: bpy.props.IntProperty("Index")
