@@ -14,25 +14,42 @@ class ActionMoveOperator(bpy.types.Operator):
 
     direction: bpy.props.StringProperty()
 
-    def execute(self, context):
-        armature = context.object.data
-        index = armature.actionman_active_action_index
-        action = armature.actionman_actions.values()[index].action
+    def invoke(self, context, event):
+        self.armature = context.object.data
+        self.index = self.armature.actionman_active_action_index
+        self.action = self.armature.actionman_actions.values()[self.index].action
 
-        if self.direction == "UP":
-            new_index = index - 1
-        if self.direction == "DOWN":
-            new_index = index + 1
-
-        if new_index < 0 or new_index >= len(armature.actionman_actions):
-            logger.warning("Can't move the current action")
-            return {"FINISHED"}
-        other_action = armature.actionman_actions.values()[new_index].action
-
-        armature.actionman_actions.move(index, new_index)
-        armature.actionman_active_action_index = new_index
-
-        enforce_constraint_order(armature, action)
-        enforce_constraint_order(armature, other_action)
+        if event.shift:
+            print("SHIFT")
+            self.move_max()
+        else:
+            print("NOT SHIFT")
+            self.move_once()
 
         return {"FINISHED"}
+
+    def move_max(self):
+        can_move = True
+        while can_move:
+            can_move = self.move_once()
+
+    def move_once(self):
+
+        if self.direction == "UP":
+            new_index = self.index - 1
+        if self.direction == "DOWN":
+            new_index = self.index + 1
+
+        if new_index < 0 or new_index >= len(self.armature.actionman_actions):
+            return False
+
+        other_action = self.armature.actionman_actions.values()[new_index].action
+
+        self.armature.actionman_actions.move(self.index, new_index)
+        self.armature.actionman_active_action_index = new_index
+        self.index = new_index
+
+        enforce_constraint_order(self.armature, self.action)
+        enforce_constraint_order(self.armature, other_action)
+
+        return True
