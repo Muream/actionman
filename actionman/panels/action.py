@@ -47,12 +47,13 @@ class ActionManActionPanel(bpy.types.Panel):
         row.separator()
 
         row = layout.row()
-        row.prop_search(action.actionman, "target", bpy.data, "objects")
-        target = bpy.data.armatures.get(action.actionman.target)
+        row.prop(action.actionman, "target")
+        target = action.actionman.target
+
         if target is not None:
-            if type(target) == bpy.types.Armature:
+            if type(target.data) == bpy.types.Armature:
                 row = layout.row()
-                row.prop_search(action.actionman, "subtarget", target, "bones", text="Bone")
+                row.prop_search(action.actionman, "subtarget", target.data, "bones", text="Bone")
 
         row = layout.row()
         row.prop(action.actionman, "transform_channel")

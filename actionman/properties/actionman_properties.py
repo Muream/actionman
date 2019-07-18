@@ -21,7 +21,7 @@ def on_update_manage(self, context):
 class ActionManProperties(bpy.types.PropertyGroup):
     manage: bpy.props.BoolProperty(name="Manage", update=on_update_manage)
     name_backup: bpy.props.StringProperty(name="Name Backup")
-    target: bpy.props.StringProperty(name="Target")
+    target: bpy.props.PointerProperty(name="Target", type=bpy.types.Object)
     subtarget: bpy.props.StringProperty(name="Sub Target")
 
     transform_channel: bpy.props.EnumProperty(

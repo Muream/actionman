@@ -73,7 +73,7 @@ class ApplyActionChanges(bpy.types.Operator):
             constraint.name = self.action.name
             constraint.show_expanded = False
 
-        target = bpy.data.objects[self.action.actionman.target]
+        target = self.action.actionman.target
         constraint.target = target
         if self.action.actionman.subtarget:
             constraint.subtarget = self.action.actionman.subtarget
@@ -99,7 +99,6 @@ class ApplyActionChanges(bpy.types.Operator):
         ]
 
         if target:
-            target = bpy.data.objects[target]
             if subtarget:
                 subtarget = target.pose.bones[subtarget]
                 controller = subtarget
@@ -114,25 +113,25 @@ class ApplyActionChanges(bpy.types.Operator):
             if not action.actionman.manage:
                 continue
             if (
-                action.actionman.target == target.name
+                action.actionman.target == target
                 and action.actionman.subtarget == subtarget.name
             ):
                 transform_channel = action.actionman.transform_channel
                 transform, axis = transform_channel.split("_")
                 end = action.actionman.activation_end
 
-            if transform == 'SCALE':
-                if end < 1:
-                    data[transform]["min_" + axis] = end
+                if transform == 'SCALE':
+                    if end < 1:
+                        data[transform]["min_" + axis] = end
 
-                if end > 1:
-                    data[transform]["max_" + axis] = end
-            else:
-                if end < 0:
-                    data[transform]["min_" + axis] = end
+                    if end > 1:
+                        data[transform]["max_" + axis] = end
+                else:
+                    if end < 0:
+                        data[transform]["min_" + axis] = end
 
-                if end > 0:
-                    data[transform]["max_" + axis] = end
+                    if end > 0:
+                        data[transform]["max_" + axis] = end
 
         for transform in ["LOCATION", "ROTATION", "SCALE"]:
             if data[transform]:
