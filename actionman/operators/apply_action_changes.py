@@ -121,6 +121,13 @@ class ApplyActionChanges(bpy.types.Operator):
                 transform, axis = transform_channel.split("_")
                 end = action.actionman.activation_end
 
+            if transform == 'SCALE':
+                if end < 1:
+                    data[transform]["min_" + axis] = end
+
+                if end > 1:
+                    data[transform]["max_" + axis] = end
+            else:
                 if end < 0:
                     data[transform]["min_" + axis] = end
 
@@ -131,8 +138,12 @@ class ApplyActionChanges(bpy.types.Operator):
             if data[transform]:
                 constraint = self.create_or_get_limit_constraint(controller, transform)
                 for axis in "XYZ":
-                    start = data[transform].get("min_" + axis, 0)
-                    end = data[transform].get("max_" + axis, 0)
+                    if transform == "SCALE":
+                        start = data[transform].get("min_" + axis, 1)
+                        end = data[transform].get("max_" + axis, 1)
+                    else:
+                        start = data[transform].get("min_" + axis, 0)
+                        end = data[transform].get("max_" + axis, 0)
                     if transform == "ROTATION":
                         setattr(constraint, "use_limit_" + axis.lower(), True)
                         start = start * (pi / 180)
@@ -157,6 +168,7 @@ class ApplyActionChanges(bpy.types.Operator):
             constraint = controller.constraints.new(constraint_type)
             constraint.owner_space = "LOCAL"
             constraint.use_transform_limit = True
+            constraint.show_expanded = False
 
         return constraint
 

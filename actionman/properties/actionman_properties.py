@@ -49,6 +49,15 @@ class ActionManProperties(bpy.types.PropertyGroup):
         default="LOCAL",
     )
 
-    activation_start: bpy.props.FloatProperty("Activation Start")
-    activation_end: bpy.props.FloatProperty("Activation End")
+    activation_start: bpy.props.FloatProperty("Activation Start", unit="LENGTH")
+    activation_end: bpy.props.FloatProperty("Activation End", unit="LENGTH")
+
+    activation_start_location: bpy.props.FloatProperty("Activation Start Location", unit="LENGTH")
+    activation_end_location: bpy.props.FloatProperty("Activation End Location", unit="LENGTH")
+
+    activation_start_rotation: bpy.props.FloatProperty("Activation Start Rotation", unit="ROTATION")
+    activation_end_rotation: bpy.props.FloatProperty("Activation End Rotation", unit="ROTATION")
+
+    activation_start_scale: bpy.props.FloatProperty("Activation Start Scale")
+    activation_end_scale: bpy.props.FloatProperty("Activation End Scale")
     index: bpy.props.IntProperty("Index")
