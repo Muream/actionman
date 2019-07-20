@@ -86,8 +86,9 @@ class ApplyActionChanges(bpy.types.Operator):
         constraint.frame_start = self.action.frame_range[0]
         constraint.frame_end = self.action.frame_range[1]
 
-        constraint.min = self.action.actionman.activation_start
-        constraint.max = self.action.actionman.activation_end
+        transform = self.action.actionman.transform_channel.split("_")[0]
+        constraint.min = getattr(self.action.actionman, "activation_start_" + transform.lower())
+        constraint.max = getattr(self.action.actionman, "activation_end_" + transform.lower())
 
     def create_or_update_limit_constraints(self):
         target = self.action.actionman.target
@@ -118,7 +119,7 @@ class ApplyActionChanges(bpy.types.Operator):
             ):
                 transform_channel = action.actionman.transform_channel
                 transform, axis = transform_channel.split("_")
-                end = action.actionman.activation_end
+                end = getattr(action.actionman, "activation_end_" + transform.lower())
 
                 if transform == 'SCALE':
                     if end < 1:
