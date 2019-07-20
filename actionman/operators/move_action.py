@@ -20,10 +20,8 @@ class ActionMoveOperator(bpy.types.Operator):
         self.action = self.armature.actionman_actions.values()[self.index].action
 
         if event.shift:
-            print("SHIFT")
             self.move_max()
         else:
-            print("NOT SHIFT")
             self.move_once()
 
         return {"FINISHED"}
