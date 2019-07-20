@@ -14,7 +14,7 @@
 bl_info = {
     "name": "Action Man",
     "author": "Loïc Pinsard",
-    "description": "",
+    "description": "Action Man is lets you easily create and manage action constraint for a given action.",
     "blender": (2, 80, 0),
     "location": "",
     "warning": "",
