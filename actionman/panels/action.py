@@ -41,12 +41,6 @@ class ActionManActionPanel(bpy.types.Panel):
             return
 
         row = layout.row()
-        row.operator("actionman.clean")
-
-        row = layout.row()
-        row.separator()
-
-        row = layout.row()
         row.prop(action.actionman, "target")
         target = action.actionman.target
 
@@ -80,6 +74,9 @@ class ActionManActionPanel(bpy.types.Panel):
 
         row = layout.row()
         row.separator()
+
+        row = layout.row()
+        row.operator("actionman.clean")
 
         row = layout.row()
         row.operator("actionman.apply", text="Apply")
