@@ -61,16 +61,9 @@ class ActionManActionPanel(bpy.types.Panel):
         split = layout.split()
         col = split.column(align=True)
 
-        transform_channel = action.actionman.transform_channel
-        if transform_channel.startswith("LOCATION"):
-            col.prop(action.actionman, "activation_start_location", text="Start")
-            col.prop(action.actionman, "activation_end_location", text="End")
-        if transform_channel.startswith("ROTATION"):
-            col.prop(action.actionman, "activation_start_rotation", text="Start")
-            col.prop(action.actionman, "activation_end_rotation", text="End")
-        if transform_channel.startswith("SCALE"):
-            col.prop(action.actionman, "activation_start_scale", text="Start")
-            col.prop(action.actionman, "activation_end_scale", text="End")
+        transform_channel = action.actionman.transform_channel.split("_")[0]
+        col.prop(action.actionman, "activation_start_" + transform_channel.lower(), text="Start")
+        col.prop(action.actionman, "activation_end_" + transform_channel.lower(), text="End")
 
         row = layout.row()
         row.separator()
