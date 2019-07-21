@@ -87,8 +87,16 @@ class ApplyActionChanges(bpy.types.Operator):
         constraint.frame_end = self.action.frame_range[1]
 
         transform = self.action.actionman.transform_channel.split("_")[0]
-        constraint.min = getattr(self.action.actionman, "activation_start_" + transform.lower())
-        constraint.max = getattr(self.action.actionman, "activation_end_" + transform.lower())
+
+        value_min = getattr(self.action.actionman, "activation_start_" + transform.lower())
+        value_max = getattr(self.action.actionman, "activation_end_" + transform.lower())
+
+        if transform == "ROTATION":
+            value_min = value_min * (180 / pi)
+            value_max = value_max * (180 / pi)
+
+        constraint.min = value_min
+        constraint.max = value_max
 
     def create_or_update_limit_constraints(self):
         target = self.action.actionman.target
@@ -120,6 +128,8 @@ class ApplyActionChanges(bpy.types.Operator):
                 transform_channel = action.actionman.transform_channel
                 transform, axis = transform_channel.split("_")
                 end = getattr(action.actionman, "activation_end_" + transform.lower())
+                if transform == "ROTATION":
+                    end = end * (180 / pi)
 
                 if transform == 'SCALE':
                     if end < 1:
@@ -146,8 +156,8 @@ class ApplyActionChanges(bpy.types.Operator):
                         end = data[transform].get("max_" + axis, 0)
                     if transform == "ROTATION":
                         setattr(constraint, "use_limit_" + axis.lower(), True)
-                        start = start * (pi / 180)
-                        end = end * (pi / 180)
+                        start = start * (180 / pi)
+                        end = end * (180 / pi)
                     else:
                         setattr(constraint, "use_min_" + axis.lower(), True)
                         setattr(constraint, "use_max_" + axis.lower(), True)
