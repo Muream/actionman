@@ -12,6 +12,9 @@ This only works on armature objects, adapting the tool to work with other object
     - You forgot to click the `clean action` button before clicking the `create constraints` button.  
 
 # Upcoming features
+- [ ] Split an action in two actions that contain Translation and Rotation/Scale.
+      If this is checked, ActionMan will put all the Translation action constraint at the top of the stack and the Rotation/Scale at the bottom of the stack.
+      This makes the rigs a lot more stable and reliable as the order of the constraints have no impact on the end result anymore.
 - [ ] Extract bones world transformation in a new action.
     This will be really usefull for making believable poses and then having multiple actions that when combined re-create that pose.
     For example splitting a smile in two actions: one with the translate Z data and the other with the translate X.
