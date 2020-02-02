@@ -14,7 +14,7 @@
 bl_info = {
     "name": "Action Man",
     "author": "Loïc Pinsard",
-    "description": "Action Man is lets you easily create and manage action constraint for a given action.",
+    "description": "Action Man lets you easily create and manage action constraint for a given action.",
     "blender": (2, 80, 0),
     "location": "",
     "warning": "",
@@ -64,7 +64,7 @@ def register():
         bpy.utils.register_class(cls)
 
     bpy.types.Action.actionman = bpy.props.PointerProperty(
-            type=ActionManProperties, name="Action Man Properties"
+        type=ActionManProperties, name="Action Man Properties"
     )
     bpy.types.Armature.actionman_actions = bpy.props.CollectionProperty(
         type=ActionManItemProperty
