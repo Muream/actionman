@@ -30,7 +30,7 @@ from .operators import (
     DeleteAllConstraints,
     ActionMoveOperator,
 )
-from .panels import ActionManActionPanel, ActionManArmaturePanel
+from .panels import ActionManActionPanel
 from .properties import ActionManItemProperty, ActionManProperties
 
 
@@ -43,7 +43,6 @@ CLASSES_TO_REGISTER = (
     ActionMoveOperator,
     # panels
     ActionManActionPanel,
-    ActionManArmaturePanel,
     # properties
     ActionManItemProperty,
     ActionManProperties,
