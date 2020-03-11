@@ -20,7 +20,9 @@ def on_update_manage(self, context):
 
 class ActionManProperties(bpy.types.PropertyGroup):
     manage: bpy.props.BoolProperty(name="Manage", update=on_update_manage)
+    index: bpy.props.IntProperty("Index")
     name_backup: bpy.props.StringProperty(name="Name Backup")
+
     target: bpy.props.PointerProperty(name="Target", type=bpy.types.Object)
     subtarget: bpy.props.StringProperty(name="Sub Target")
 
@@ -52,12 +54,28 @@ class ActionManProperties(bpy.types.PropertyGroup):
     activation_start: bpy.props.FloatProperty("Activation Start", unit="LENGTH")
     activation_end: bpy.props.FloatProperty("Activation End", unit="LENGTH")
 
-    activation_start_location: bpy.props.FloatProperty("Activation Start Location", unit="LENGTH")
-    activation_end_location: bpy.props.FloatProperty("Activation End Location", unit="LENGTH")
+    activation_start_location: bpy.props.FloatProperty(
+        "Activation Start Location", unit="LENGTH"
+    )
+    activation_end_location: bpy.props.FloatProperty(
+        "Activation End Location", unit="LENGTH"
+    )
 
-    activation_start_rotation: bpy.props.FloatProperty("Activation Start Rotation", unit="ROTATION")
-    activation_end_rotation: bpy.props.FloatProperty("Activation End Rotation", unit="ROTATION")
+    activation_start_rotation: bpy.props.FloatProperty(
+        "Activation Start Rotation", unit="ROTATION"
+    )
+    activation_end_rotation: bpy.props.FloatProperty(
+        "Activation End Rotation", unit="ROTATION"
+    )
 
     activation_start_scale: bpy.props.FloatProperty("Activation Start Scale")
     activation_end_scale: bpy.props.FloatProperty("Activation End Scale")
-    index: bpy.props.IntProperty("Index")
+    split_transformations: bpy.props.BoolProperty(
+        name="Split Transformations", default=True
+    )
+    translate_subaction: bpy.props.PointerProperty(
+        name="Translate Subaction", type=bpy.types.Action
+    )
+    rotate_scale_subaction: bpy.props.PointerProperty(
+        name="Rotate/Scale Subaction", type=bpy.types.Action
+    )

@@ -40,30 +40,48 @@ class ActionManActionPanel(bpy.types.Panel):
         if not action.actionman.manage:
             return
 
-        row = layout.row()
+        settings_box = layout.box()
+        row = settings_box.row()
         row.prop(action.actionman, "target")
         target = action.actionman.target
 
         if target is not None:
             if type(target.data) == bpy.types.Armature:
-                row = layout.row()
-                row.prop_search(action.actionman, "subtarget", target.data, "bones", text="Bone")
+                row = settings_box.row()
+                row.prop_search(
+                    action.actionman, "subtarget", target.data, "bones", text="Bone"
+                )
 
-        row = layout.row()
+        row = settings_box.row()
         row.prop(action.actionman, "transform_channel")
 
-        row = layout.row()
+        row = settings_box.row()
         row.prop(action.actionman, "target_space")
 
-        row = layout.row()
+        row = settings_box.row()
+        row.separator()
+
+        row = settings_box.row()
         row.label(text="Activation Range:")
 
-        split = layout.split()
+        split = settings_box.split()
         col = split.column(align=True)
 
         transform_channel = action.actionman.transform_channel.split("_")[0]
-        col.prop(action.actionman, "activation_start_" + transform_channel.lower(), text="Start")
-        col.prop(action.actionman, "activation_end_" + transform_channel.lower(), text="End")
+        col.prop(
+            action.actionman,
+            "activation_start_" + transform_channel.lower(),
+            text="Start",
+        )
+        col.prop(
+            action.actionman, "activation_end_" + transform_channel.lower(), text="End"
+        )
+
+        row = settings_box.row()
+        row.separator()
+
+        row = settings_box.row()
+        row.prop(action.actionman, "split_transformations")
 
         row = layout.row()
         row.separator()
@@ -73,6 +91,9 @@ class ActionManActionPanel(bpy.types.Panel):
 
         row = layout.row()
         row.operator("actionman.apply", text="Apply")
+
+        row = layout.row()
+        row.separator()
 
         row = layout.row()
         row.label(text="Delete Constraints:")
