@@ -101,14 +101,19 @@ class ApplyActionChanges(bpy.types.Operator):
                 translate_constraint = self.create_or_get_action_constraint(
                     bone, self.action.name + ".translate"
                 )
-                self.set_constraint_settings(translate_constraint)
+                self.set_constraint_settings(
+                    translate_constraint, self.action.actionman.translate_subaction
+                )
                 rotate_scale_constraint = self.create_or_get_action_constraint(
                     bone, self.action.name + ".rotate_scale"
                 )
-                self.set_constraint_settings(rotate_scale_constraint)
+                self.set_constraint_settings(
+                    rotate_scale_constraint,
+                    self.action.actionman.rotate_scale_subaction,
+                )
             else:
                 constraint = self.create_or_get_action_constraint(
-                    bone, self.action.name
+                    bone, self.action.name, self.action
                 )
                 self.set_constraint_settings(constraint)
 
@@ -144,7 +149,7 @@ class ApplyActionChanges(bpy.types.Operator):
             constraint.show_expanded = False
         return constraint
 
-    def set_constraint_settings(self, constraint):
+    def set_constraint_settings(self, constraint, action):
         target = self.action.actionman.target
         constraint.target = target
         if self.action.actionman.subtarget:
@@ -153,7 +158,7 @@ class ApplyActionChanges(bpy.types.Operator):
         constraint.transform_channel = self.action.actionman.transform_channel
         constraint.target_space = self.action.actionman.target_space
 
-        constraint.action = self.action
+        constraint.action = action
 
         constraint.frame_start = self.action.frame_range[0]
         constraint.frame_end = self.action.frame_range[1]

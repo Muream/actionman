@@ -6,10 +6,30 @@ logger = logging.getLogger(__name__)
 
 
 def enforce_constraint_order(armature, action):
-    ordered_action_names = [a.name for a in armature.actionman_actions.values()]
     bones = get_affected_bones(armature, action)
     current_active_bone = armature.bones.active
     for bone in bones:
+        constraints = bone.constraints
+
+        action_constraints = [c.name for c in constraints if c.type == "ACTION"]
+        translate_constraints = sorted(
+            [c for c in action_constraints if "translate" in c]
+        )
+        rotate_scale_constraints = sorted(
+            [c for c in action_constraints if "rotate_scale" in c]
+        )
+        unsplit_constraints = sorted(
+            list(
+                set(action_constraints)
+                - set(translate_constraints)
+                - set(rotate_scale_constraints)
+            )
+        )
+
+        ordered_action_names = (
+            translate_constraints + rotate_scale_constraints + unsplit_constraints
+        )
+
         armature.bones.active = bone.bone
         reorder_constraints(bone, ordered_action_names)
     armature.bones.active = current_active_bone
