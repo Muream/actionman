@@ -113,9 +113,9 @@ class ApplyActionChanges(bpy.types.Operator):
                 )
             else:
                 constraint = self.create_or_get_action_constraint(
-                    bone, self.action.name, self.action
+                    bone, self.action.name
                 )
-                self.set_constraint_settings(constraint)
+                self.set_constraint_settings(constraint, self.action)
 
         self.create_or_update_limit_constraints()
 
