@@ -160,8 +160,8 @@ class ApplyActionChanges(bpy.types.Operator):
 
         constraint.action = action
 
-        constraint.frame_start = self.action.frame_range[0]
-        constraint.frame_end = self.action.frame_range[1]
+        constraint.frame_start = int(self.action.frame_range[0])
+        constraint.frame_end = int(self.action.frame_range[1])
 
         transform = self.action.actionman.transform_channel.split("_")[0]
 
